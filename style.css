@@ -29,17 +29,19 @@
   .countries {
     /* margin-bottom: 8rem; */
     display: flex;
-  
+    flex-direction: row;
+    
     font-size: 2rem;
     opacity: 0;
     transition: opacity 1s;
   }
   
   .country {
-    background-color: #fff;
+    background-color: #8E7AB5;
     box-shadow: 0 2rem 5rem 1rem rgba(0, 0, 0, 0.1);
     font-size: 1.8rem;
     width: 30rem;
+    color: black;
     border-radius: 0.7rem;
     margin: 0 3rem;
     /* overflow: hidden; */
