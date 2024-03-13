@@ -116,14 +116,14 @@ const renderCountry = function(data, className = ''){
 // // //     })
 
 // // // }
-// // const getJSON = function(url, errorMsg = "Something went wrong"){
-// //      return  fetch(url)
-// //     .then((response) => { 
-// //         if(!response.ok)
-// //         throw new Error(`${errorMsg}(${response.status})`)
-// //         return response.json()
-// //     }
-// //     )}; 
+const getJSON = function(url, errorMsg = "Something went wrong"){
+     return  fetch(url)
+    .then((response) => { 
+        if(!response.ok)
+        throw new Error(`${errorMsg}(${response.status})`)
+        return response.json()
+    }
+    )}; 
 
 
 // // const getCountryData = function(country){
@@ -240,68 +240,69 @@ const renderCountry = function(data, className = ''){
 //         reject(new Error ('You lost 🥲'));
 //     }
 // }, 2000)
+// // });
+
+// // loteryPromise.then(res => console.log(res)).catch(err => console.error(err));
+
+
+
+// // Promisifying set time out 
+
+// const wait = function(seconds){
+// return new Promise(function(resolve){
+//     setTimeout(resolve, seconds *1000);
 // });
+// };
 
-// loteryPromise.then(res => console.log(res)).catch(err => console.error(err));
-
-
-
-// Promisifying set time out 
-
-const wait = function(seconds){
-return new Promise(function(resolve){
-    setTimeout(resolve, seconds *1000);
-});
-};
-
-// wait(2).then(() => {
-//     console.log('I waited for 2 seconds');
-//     return wait(1); 
-// }).then(() => {
-//     console.log("I waited for 1 second");
-// });
+// // wait(2).then(() => {
+// //     console.log('I waited for 2 seconds');
+// //     return wait(1); 
+// // }).then(() => {
+// //     console.log("I waited for 1 second");
+// // });
 
 
-//Promisify the Geolocation API 
+// //Promisify the Geolocation API 
 
-const getPosition =  function (){
- return new Promise(function(resolve, reject){
-    // navigator.geolocation.getCurrentPosition(position => resolve(position), err => reject(err)); 
-    navigator.geolocation.getCurrentPosition(resolve, reject); 
- });
-};
-// getPosition().then(pos => console.log(pos)); 
+// const getPosition =  function (){
+//  return new Promise(function(resolve, reject){
+//     // navigator.geolocation.getCurrentPosition(position => resolve(position), err => reject(err)); 
+//     navigator.geolocation.getCurrentPosition(resolve, reject); 
+//  });
+// };
+// // getPosition().then(pos => console.log(pos)); 
 
-const whereAmI = function () {
-  getPosition().then(pos=> {
-    const {latitude:lat, longitude: lng} = pos.coords;
-    return fetch(`https://geocode.xyz/${lat},${lng}?geoit=json`) 
-  })
+// const whereAmI = function () {
+//   getPosition().then(pos=> {
+//     const {latitude:lat, longitude: lng} = pos.coords;
+//     return fetch(`https://geocode.xyz/${lat},${lng}?geoit=json`) 
+//   })
 
-          .then(res => {
-            if (!res.ok) throw new Error(`Problem with geocoding ${res.status}`);
-            return res.json();
-          })
-          .then(data => {
-            console.log(data);
-            console.log(`You are in ${data.city}, ${data.country}`);
+//           .then(res => {
+//             if (!res.ok) throw new Error(`Problem with geocoding ${res.status}`);
+//             return res.json();
+//           })
+//           .then(data => {
+//             console.log(data);
+//             console.log(`You are in ${data.city}, ${data.country}`);
       
-            return fetch(`https://restcountries.eu/rest/v2/name/${data.country}`);
-          })
-          .then(res => {
-            if (!res.ok) throw new Error(`Country not found (${res.status})`);
+//             return fetch(`https://restcountries.eu/rest/v2/name/${data.country}`);
+//           })
+//           .then(res => {
+//             if (!res.ok) throw new Error(`Country not found (${res.status})`);
       
-            return res.json();
-          })
-          .then(data => renderCountry(data[0]))
-          .catch(err => console.error(`${err.message} 💥`));
-      };
+//             return res.json();
+//           })
+//           .then(data => renderCountry(data[0]))
+//           .catch(err => console.error(`${err.message} 💥`));
+//       };
 
     
-    btn.addEventListener('click', whereAmI); 
+//     btn.addEventListener('click', whereAmI); 
 
+// Challange 2 
 
-    const imgContainer = document.querySelector('.images');
+    // const imgContainer = document.querySelector('.images');
 
     const createImage = function(imgPath){
         return new Promise(function(resolve, reject){
@@ -321,27 +322,110 @@ const whereAmI = function () {
     };
 
 
-    let currentImg; 
+//     let currentImg; 
 
-    createImage('img/img-1.jpg')
-    .then(img => {
-        currentImg= img;
+//     createImage('img/img-1.jpg')
+//     .then(img => {
+//         currentImg= img;
+//         console.log('Image 1 loaded');
+//         return wait(2)
+//     })
+//     .then(()=> {
+//         currentImg.style.display = 'none';
+//         return(createImage('img/img-2.jpg').then(img => {
+//             console.log('Image 2 loaded');
+//             return wait(2); 
+//         }))
+//     })
+//     .then(img => {
+//        currentImg= img;
+//         return(createImage('img/img-3.jpg').then(img => {
+//             console.log('Image 3 loaded');
+//             return wait(2); 
+//         }))
+//     })
+//     .then(()=> currentImg.style.display = 'none')
+//     .catch(err => console.log(err)); 
+
+
+
+// const whereamI = async function(country){
+//     const res = await fetch(`https://restcountries.eu/rest/v2/name/${country}`);
+//     const data = await res.json()
+//     console.log(data);
+//     renderCountry(data)
+
+// }
+// whereamI('France'); 
+// console.log("FIRST");
+
+
+
+
+// const get3Countries = async function(c1, c2, c3){
+
+//     try{
+//        const [data1] =  await getJSON(`https://restcountries.eu/rest/v2/name/${c1}`);
+//        const [data2] =  await getJSON(`https://restcountries.eu/rest/v2/name/${c2}`);
+//        const [data3] =  await getJSON(`https://restcountries.eu/rest/v2/name/${c3}`);
+
+//        console.log(data1.capital, data2.capital, data3.capital);
+
+//     }catch(err){
+//         console.log(err);
+//     }
+// }
+// get3Countries('France', 'Canada', 'Tanzania'); 
+
+
+//Promise.all   > all in paralel but will shortcircuit if one is rejected 
+//Promise.race   > one result, the fastest of all 
+//Promise.allSettled >  never shortcircuit, returns all 
+//Promise.any >  rejected promises are ignored 
+
+
+//Chanllange 3 
+
+
+    const imgContainer = document.querySelector('.images');
+
+const loadNPause = async function(){
+    try{
+
+        //Load img 1 
+        let img = await createImage('img/img-1.jpg');
         console.log('Image 1 loaded');
-        return wait(2)
-    })
-    .then(()=> {
-        currentImg.style.display = 'none';
-        return(createImage('img/img-2.jpg').then(img => {
-            console.log('Image 2 loaded');
-            return wait(2); 
-        }))
-    })
-    .then(img => {
-       currentImg= img;
-        return(createImage('img/img-3.jpg').then(img => {
-            console.log('Image 3 loaded');
-            return wait(2); 
-        }))
-    })
-    .then(()=> currentImg.style.display = 'none')
-    .catch(err => console.log(err)); 
+        await wait(2); 
+        img.style.display = 'none';
+
+        //Load img2 
+        img = await createImage('img/img-2.jpg');
+        console.log('Image 2 loaded');
+        await wait(2); 
+        img.style.display = 'none';
+        
+        //Load img3
+
+    }catch(err){
+        console.error(err);
+    }
+}
+
+// loadNPause(); 
+
+
+const loadAll  = async function(imgArr){
+    try{
+
+    const imgs= imgArr.map(async img => await createImage(img));  //an async function will always return a promise 
+    console.log(imgs);
+
+   const ImgEl= await Promise.all(imgs);
+   console.log(ImgEl);
+   ImgEl.forEach(img=> img.classList.add('parallel'));
+
+    }catch(err){console.error(err);
+
+    }
+}
+loadAll( ['img/img-1.jpg', 'img/img-2.jpg', 'img/img-3.jpg']);
